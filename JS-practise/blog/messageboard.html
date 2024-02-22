@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .article-box {
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            background-color: skyblue;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .article-in {
+            flex-grow: 1;
+        }
+
+        .article-text {
+            width: 50%;
+            height: 100px;
+            resize: none;
+        }
+
+        .display-box {
+            width: 90%;
+            margin: auto;
+            background-color: pink;
+            padding: 20px;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .display-article {
+            width: 45%;
+            margin: 20px;
+            border-radius: 10px;
+            background-color: white;
+            align-self: flex-start;
+        }
+
+        .article-content {
+            padding: 10px;
+        }
+
+        .w100 {
+            display: flex;
+            margin-bottom: 10px;
+            justify-content: end;
+
+        }
+
+        .reply-btn {
+            margin-left: 5px;
+        }
+
+        .reply-content {
+            display: flex;
+            border-top: 1px solid gray;
+            margin-bottom: 2px;
+            padding: 5px 0;
+        }
+
+        .article-text {
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .delete-btn {
+            margin-left: auto;
+        }
+        .user-information-box {
+            display: flex;
+            flex-direction: column;
+        }
+        .sign-out-btn {
+            margin-bottom: 10px;
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="article-box">
+        <div class="article-in">
+            <textarea name="" placeholder="請輸入內容" class="article-text" id="" cols="30" rows="10"></textarea>
+            <button class="article-btn">發表</button>
+        </div>
+        <div class="user-information-box">
+            <button class="sign-out-btn">登入</button>
+            <div class="user-information"></div>
+        </div>
+    </div>
+    <div class="display-box">
+        <div class="display-article">
+        </div>
+    </div>
+</body>
+<script>
+    let arr = [];
+    const articleText = document.querySelector('.article-text');
+    const articleBtn = document.querySelector('.article-btn');
+    const displayArticle = document.querySelector('.display-article');
+    const articleContent = document.querySelector('.article-content');
+    const replyBtn = document.querySelector('.replyBtn');
+    const signOutBtn = document.querySelector('.sign-out-btn');
+    const displayBox = document.querySelector('.display-box');
+    const userInformation = document.querySelector('.user-information');
+    const userRetentionData = JSON.parse(localStorage.getItem('userRetentionData'));
+
+    if (localStorage.getItem('messageBoard')) {
+        arr = JSON.parse(localStorage.getItem('messageBoard'));
+    }
+
+    // 取得登入的使用者
+    if (localStorage.getItem('userRetentionData')) {
+    userInformation.innerHTML = `使用者名稱 : ${userRetentionData.username}`;
+    signOutBtn.innerHTML = '登出';
+    }; 
+
+    signOutBtn.addEventListener('click',()=> {
+        localStorage.removeItem('userRetentionData');
+        signOutBtn.innerHTML = '登入';
+        location.href = './login.html';
+    });
+
+
+    output(arr);
+
+    articleBtn.addEventListener('click', addArr);
+
+    // 新增文章
+    function addArr() {
+        let addId = 0;
+        if (arr.length !== 0) {
+            addId = arr[arr.length - 1].id + 1;
+        }
+        const addText = articleText.value;
+        articleText.value = '';
+        if (addText !== '') {
+            const addArr = {
+                id: addId,
+                text: addText,
+                retext: [],
+            }
+            arr.push(addArr);
+        }
+
+        output(arr);
+
+    };
+    // 編輯文章內容
+    function editArticle(id) {
+        arr.forEach((item) => {
+            if (id == item.id) {
+                const editText = window.prompt("請填入您的留言");
+                if (editText !== '' && editText !== null) {
+                    item.text = editText;
+                }
+            }
+        })
+        output(arr);
+    };
+    // 刪除文章
+    function deleteArticle(id) {
+        arr.forEach((item) => {
+            if (id == item.id) {
+                if (window.confirm('確定要刪除？') == true) {
+                    arr.splice(arr.indexOf(item), 1)
+                }
+            }
+        })
+        output(arr);
+    };
+
+    // 新增留言
+    function addReply(addId) {
+        const addReplyText = window.prompt("請填入您的留言");
+        if (addReplyText !== '' && addReplyText !== null) {
+            arr.forEach((item) => {
+                if (addId == item.id) {
+                    item.retext.push(addReplyText);
+                }
+            })
+        }
+        output(arr);
+    };
+
+    // 刪除留言
+    function deleteReply(i, e) {
+        arr.forEach((item) => {
+            if (item.id == e) {
+                if (window.confirm('確定要刪除？') == true) {
+                    item.retext.splice(i, 1)
+                }
+            }
+        })
+        output(arr);
+     
+    }
+
+
+    // 呈現內容
+    function output(arr) {
+        displayBox.innerHTML = ``;
+        arr.forEach((item) => {
+            let replyContent = '';
+            item.retext.forEach((e, i) => {
+                replyContent += `<div class="reply-content"><span>留言${i + 1} : ${e}</span>
+                <button type="button" class="delete-btn " onclick="deleteReply(${i}, ${item.id})">刪除</button>
+                </div>`;
+            })
+            displayBox.innerHTML += `<div class="display-article">
+                <div class="article-content">${item.text}
+                    <div class="w100">
+                        <button type="button" class="reply-btn" onclick="editArticle(${item.id})">編輯</button>
+                        <button type="button" class="reply-btn" onclick="deleteArticle(${item.id})">刪除</button>
+                        <button type="button" class="reply-btn" onclick="addReply(${item.id})">回覆</button>
+                    </div> 
+                    ${replyContent}
+                </div>
+            </div>`
+        });
+
+        // 保存資料
+        const arrData = JSON.stringify(arr);
+        localStorage.setItem('messageBoard', arrData);
+    };
+
+</script>
+
+</html>

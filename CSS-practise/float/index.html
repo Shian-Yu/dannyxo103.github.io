@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!-- 語言設定 -->
+<html lang="zh-Hant-TW">
+
+<head>
+    <!-- 文字格式 -->
+    <meta charset="UTF-8">
+    <!-- 視窗設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 頁籤名稱 -->
+    <title>我的第一個網頁</title>
+    <!-- 更換頁籤圖示 -->
+    <link rel="shortcut icon" href="image/170.ico" type="image/x-icon">
+    <!-- css樣式表 -->
+    <style>
+        /* css 的 註解 */
+        /* id 要用 # 指定 */
+        /* 用 {} 將樣式包起來*/
+        /* id命名方式 英文命名 最多就加數字 */
+        /* 小駝峰命名方法 */
+        #bigBox {
+            border: 1px solid black;
+        }
+        #box1 {
+            width: 50px;
+            height: 50px;
+            /* 背景色 */
+            background-color: skyblue;
+            /* 字體顏色 */
+            color: red;
+            /* float 上移一層 */
+            /* float 漂浮 元素會脫離排版(消除區塊的特性) =>父層損失高度，後面的元素會遞補 */
+            float: left;
+        }
+
+        #box2 {
+            width: 200px;
+            height: 250px;
+            background-color: pink;
+            font-size: 32px;
+            float: right;
+        }
+        #box3 {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            font-size: 48px;
+            /* float: left; */
+            /* clear 清除漂浮特性 */
+        }
+        </style>
+    <!-- css樣式表 -->
+    <!-- link:css -->
+</head>
+
+<body>
+    <div id="bigBox"> 
+        <div id="box1">A</div>
+        <div id="box2">B</div>
+        <div id="box3">C</div>
+    </div>
+
+    <!-- emmet -->
+    <!-- #box$*7 -->
+    <!-- #bigBox>#box$*7 -->
+</body>
+
+</html>

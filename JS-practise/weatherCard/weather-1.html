@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-image: url(./img/IMG_6751.jpeg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .nav {
+            width: 100%;
+            height: 50px;
+            position: sticky;
+            display: flex;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .nav-btn {
+            width: 10%;
+            opacity: 0.5;
+            border-radius: 20px;
+            margin-right: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .nav-btn:hover {
+            background-color: red;
+        }
+
+        .card-region {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 20px;
+            background-color: rgba(255, 182, 193, 0.7);
+            border: 1px dashed black;
+            border-radius: 40px;
+            margin-right: 20px;
+            margin-bottom: 30px;
+        }
+
+        .city {
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <button class="nav-btn">全省</button>
+        <button class="nav-btn">北部</button>
+        <button class="nav-btn">中部</button>
+        <button class="nav-btn">南部</button>
+        <button class="nav-btn">東部</button>
+        <button class="nav-btn">離島</button>
+    </div>
+    <div class="card-region"></div>
+
+
+    <script>
+        let btnAll = document.querySelectorAll('.nav-btn');
+
+        let cities = [
+            ['基隆市', '新北市', '臺北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義市', '嘉義縣', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'],
+            ['基隆市', '新北市', '臺北市', '桃園市', '新竹市', '新竹縣', '苗栗縣'],
+            ['臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義市', '嘉義縣'],
+            ['臺南市', '高雄市', '屏東縣'],
+            ['宜蘭縣', '花蓮縣', '臺東縣'],
+            ['澎湖縣', '金門縣', '連江縣'],
+        ]
+
+        let nowCities = cities[0];
+        let orgData = {};
+        let url = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWA-16F061D5-010E-4E04-9BB9-0D3DCCEBA1A9';
+        
+        fetch_data();
+
+        btnAll.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                nowCities = cities[index];
+                fetch_data();
+            })
+        })
+
+        function fetch_data() {
+            fetch(url)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (datas) {
+                    // console.log(datas);
+
+                    // 1.組織資料
+                    organizationData(datas);
+                    // 2.處裡城市
+                    arrangeCites();
+
+                    // 你的程式
+                }).catch((err) => {console.log(err);});
+        }
+
+        function organizationData(data) {
+            // console.log(data.records.location);
+            let locationAll = data.records.location;
+            // console.log(locationAll);
+            locationAll.forEach(location => {
+                let locationName = location.locationName;
+                let loc_wE_t0 = location.weatherElement[0].time[0];
+                let wxCondition = loc_wE_t0.parameter.parameterName;
+                let startTime = loc_wE_t0.startTime.substring(11, 16);
+                let endTime = loc_wE_t0.endTime.substring(11, 16);
+                let maxT = location.weatherElement[4].time[0].parameter.parameterName;
+                let minT = location.weatherElement[2].time[0].parameter.parameterName;
+                let pop = location.weatherElement[1].time[0].parameter.parameterName;
+                let ci = location.weatherElement[3].time[0].parameter.parameterName;
+                // console.log(ci);
+                // 非常好而特別的方法
+                orgData[locationName] = {
+                    'wxCondition': wxCondition,
+                    'startTime': startTime,
+                    'endTime': endTime,
+                    'maxT': maxT,
+                    'minT': minT,
+                    'pop': pop,
+                    'ci': ci,
+                }
+            });
+            console.log(orgData);
+        }
+
+        function arrangeCites() {
+            let cardRegion = document.querySelector('.card-region');
+            cardRegion.innerHTML = '';
+            nowCities.forEach((city, index) => {
+                let cityData = orgData[city];
+                console.log(city, cityData);
+                cardRegion.innerHTML += `
+                <div class="card">
+                    <div class="city">${city}</div>
+                    <img src="./svg/${cityData.wxCondition}.svg" alt="">
+                    <br>
+                    <span>${cityData.startTime} ~ ${cityData.endTime}</span>
+                    <br>
+                    <span>天氣：${cityData.wxCondition}</span>
+                    <br>
+                    <span>溫度：${cityData.minT} 度 ~ ${cityData.maxT} 度</span>
+                    <br>
+                    <span>降雨機率：${cityData.pop}％</span>
+                    <br>
+                    <span style="color: red;">${cityData.ci}</span>
+                </div> `
+            })
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            padding-top: 10%;
+            padding-bottom: 10%;
+        }
+
+        #box {
+            background-color: rgb(242, 239, 208);
+            width: calc(80% - 10px*2);
+            height: calc(600px - 10px*2);
+            padding: 10px;
+            margin: auto;
+        }
+
+        #header {
+            background-color: rgb(252, 216, 0);
+            width: 100%;
+            height: calc(20% - 20px/5);
+            margin-bottom: 10px;
+        }
+
+        #main {
+            background-color: rgb(242, 239, 208);
+            width: 100%;
+            height: calc(60% - 20px/5*3);
+            margin-bottom: 10px;
+        }
+
+        #footer {
+            background-color: rgb(33, 178, 171);
+            width: 100%;
+            height: calc(20% - 20px/5);
+        }
+
+        #mainL {
+            background-color: rgb(137, 205, 250);
+            width: calc(34% - 10px/50*17);
+            height: 100%;
+            float: left;
+            margin-right: 10px;
+        }
+
+        #mainR {
+            background-color: rgb(242, 239, 208);
+            width: calc(66% - 10px/50*33);
+            height: 100%;
+            float: left;
+        }
+
+        #mainR-top {
+            background-color: rgb(176, 197, 224);
+            width: 100%;
+            height: calc(34% - 20px/50*17);
+            margin-bottom: 10px;
+        }
+
+        #mainR-middle {
+            background-color: rgb(253, 105, 181);
+            width: 100%;
+            height: calc(32% - 20px/50*16);
+            margin-bottom: 10px;
+        }
+
+        #mainR-down {
+            background-color: rgb(176, 255, 50);
+            width: 100%;
+            height: calc(34% - 20px/50*17);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div id="header"></div>
+        <div id="main">
+            <div id="mainL"></div>
+            <div id="mainR">
+                <div id="mainR-top"></div>
+                <div id="mainR-middle"></div>
+                <div id="mainR-down"></div>
+            </div>
+        </div>
+        <div id="footer"></div>
+    </div>
+</body>
+
+</html>

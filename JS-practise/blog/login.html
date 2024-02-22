@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding-top: 40px;
+        }
+
+        .login-box {
+            width: 200px;
+            height: 200px;
+            background-color: lightgray;
+            border-radius: 10px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .signup-box {
+            width: 200px;
+            height: 200px;
+            background-color: rgb(234, 234, 234);
+            border-radius: 10px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .display-hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <p>會員登入</p>
+        <p>使用者名稱:<input type="text" class="login-text"></p>
+        <p>使用者密碼:<input type="password" class="login-password"></p>
+        <button class="signup-btn">註冊會員</button>
+        <button class="login-btn">登入</button>
+    </div>
+    <div class="signup-box display-hidden">
+        <p>會員註冊</p>
+        <p>使用者名稱:<input type="text" class="signup-text"></p>
+        <p>使用者密碼:<input type="password" class="signup-password"></p>
+        <button class="cancel-btn">取消</button>
+        <button class="signup-yes-btn">註冊</button>
+    </div>
+
+    <script>
+        const signupBtn = document.querySelector('.signup-btn');
+        const loginBtn = document.querySelector('.login-btn');
+        const signupBox = document.querySelector('.signup-box');
+        const loginText = document.querySelector('.login-text');
+        const signupText = document.querySelector('.signup-text');
+        const loginPassword = document.querySelector('.login-password');
+        const signupPassword = document.querySelector('.signup-password');
+        const signupYesBtn = document.querySelector('.signup-yes-btn');
+        const cancelBtn = document.querySelector('.cancel-btn');
+
+        let userArr = [];
+        if (localStorage.getItem('userLoginData')) {
+            userArr = JSON.parse(localStorage.getItem('userLoginData'));
+        }
+        // 顯示註冊視窗
+        signupBtn.addEventListener('click', () => {
+            signupBox.classList.remove('display-hidden');
+        });
+        // 取消註冊
+        cancelBtn.addEventListener('click', () => {
+            signupBox.classList.add('display-hidden');
+            signupText.value = '';
+            signupPassword.value = '';
+        });
+        // 登錄及確認註冊資料
+        signupYesBtn.addEventListener('click', () => {
+            const repeat = userArr.findIndex(user => user.username === signupText.value);
+            if (repeat !== -1) {
+                alert('使用者名稱重複');
+                return;
+            }
+            if (signupText.value.trim() !== '' && signupPassword.value.trim() !== '') {
+                signupBox.classList.add('display-hidden');
+                let addUserId = 0;
+                if (userArr.length !== 0) {
+                    addUserId = userArr[userArr.length - 1].userId
+                }
+                let addUserArr = {
+                    userId: addUserId + 1,
+                    username: signupText.value,
+                    userpassword: signupPassword.value,
+                }
+                userArr.push(addUserArr);
+                signupText.value = '';
+                signupPassword.value = '';
+                alert('註冊成功');
+            } else {
+                alert('請填入資料，資料不得為空白');
+            }
+            const userArrData = JSON.stringify(userArr);
+            localStorage.setItem('userLoginData', userArrData);
+        });
+        // 確認登入資料
+        loginBtn.addEventListener('click', () => {
+            const check = userArr.findIndex(user => user.username === loginText.value && user.userpassword === loginPassword.value);
+            if (check !== -1) {
+                const userRetention = userArr[check];
+                const userRetentionData = JSON.stringify(userRetention);
+                localStorage.setItem('userRetentionData', userRetentionData);
+                console.log(userRetention);
+                alert('登入成功');
+                location.href = './messageboard.html';
+            } else {
+                alert('登入失敗，請確認帳號密碼');
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            padding: 10%;
+            justify-content: center;
+        }
+
+        .box-big {
+            width: 90%;
+            background-color: skyblue;
+            padding: 10px;
+
+        }
+
+        .write {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+
+        .input-text {
+            flex-grow: 1;
+            margin: 8px;
+        }
+
+        .title-all {
+            display: flex;
+            border-bottom: 1px solid gray;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            width: 60px;
+            height: 40px;
+            background-color: rgb(179, 228, 183);
+            margin-right: 3px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border: none;
+        }
+
+        .content-all {
+            border-bottom: 1px solid gray;
+            padding-bottom: 5px;
+        }
+
+        .content {
+            display: flex;
+            padding-bottom: 5px;
+            width: 100%;
+        }
+
+        .ma {
+            width: 100%;
+            text-align: center;
+        }
+
+        .m1 {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn-box {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-btn {
+            width: 40%;
+            height: 25px;
+        }
+
+        .my-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box-big">
+        <div class="write">
+            <input type="text" placeholder="請輸入事項" class="input-text add-text">
+            <button class="add-Todo">新增</button>
+        </div>
+        <div class="title-all">
+            <button class="all title" data-search="all">全部</button>
+            <button class="is-todo title" data-search="isTodo">已執行</button>
+            <button class="not-todo title" data-search="notTodo">未執行</button>
+        </div>
+        <div class="content-all">
+            <div class="content">
+                <div class="m1">執行</div>
+                <div class="m1">事項</div>
+                <div class="ma m1">功能</div>
+            </div>
+            <div class="data-show">
+                <div class="content">
+                    <div class="m1">
+                        <input type="checkbox">
+                    </div>
+                    <div class="m1">第一筆</div>
+                    <div class="btn-box m1">
+                        <button class="content-btn">編輯</button>
+                        <button class="content-btn">刪除</button>
+                    </div>
+                </div>
+            </div>
+            <button class="enter-to-local" type="button">存進local</button>
+        </div>
+    </div>
+
+    <script>
+        // 保留篩選
+        let searchText = '';
+        // 初始陣列
+        let arr = [
+            {
+                id: 1,
+                check: true,
+                text: '第一筆',
+                editText: '',
+            }
+        ];
+        // 解構資料
+        if (localStorage.getItem('todoList')) {
+            arr = JSON.parse(localStorage.getItem('todoList'));
+        }
+
+        const dataShow = document.querySelector('.data-show');
+        const btn = document.querySelectorAll('.title');
+        const enter = document.querySelector('.enter-to-local');
+        enter.addEventListener('click', () => {
+            // 如果我的arr沒有值的時候，我要清除localStorage的key
+            if (arr.length === 0) {
+                localStorage.removeItem('todoList');
+            } else {
+                // 製作成JSON格式，以利資料儲存
+                const arrData = JSON.stringify(arr);
+                // 儲存數據
+                localStorage.setItem('todoList', arrData);
+            }
+        })
+        // 篩選按鈕點選
+        btn.forEach((item) => {
+            item.addEventListener('click', () => {
+                searchText = item.dataset.search;
+                switchData(searchText);
+            })
+        });
+
+        output(arr);
+
+        const addText = document.querySelector('.add-text');
+        const addTodo = document.querySelector('.add-Todo');
+        // 新增
+        addTodo.addEventListener('click', () => {
+            const text = addText.value;
+            let id = 0;
+            if (arr.length !== 0) {
+                id = arr[arr.length - 1].id;
+            }
+            if (text != '') {
+                const addArr = {
+                    id: id + 1,
+                    check: false,
+                    text: text,
+                    editText: '',
+                }
+                arr.push(addArr);
+            }
+            output(arr);
+        })
+        // 編輯
+        function editText(id) {
+            arr.map((item) => {
+                if (item.id == id) {
+                    const content = prompt('修改文字');
+                    if (content != '' || content == null) {
+                        item.text = content;
+                    }
+                }
+            })
+            output(arr);
+            console.log(arr);
+        }
+        // 刪除
+        function deleteText(id) {
+            if (confirm('是否要刪除') == true) {
+                const deleteArr = arr.filter((item) => {
+                    if (item.id != id) {
+                        return item;
+                    }
+                });
+                arr = deleteArr;
+                output(deleteArr);
+                alert('已刪除');
+                console.log(arr);
+            }
+        }
+
+        function checkTodo(id) {
+            arr.map((item) => {
+                if (item.id == id) {
+                    item.check = !item.check;
+                }
+            })
+            switchData(searchText);
+        }
+        // 產生Todolist
+        function output(addArr) {
+            dataShow.innerHTML = ``;
+            addArr.forEach((item) => {
+
+                dataShow.innerHTML += `
+                <div class="content">
+                    <div class="m1">
+                        <input type="checkbox" ${item.check == true ? 'checked' : ''} onclick = "checkTodo(${item.id})">
+                    </div>
+                    <div class="m1"><div class="my-wrap">${item.text}</div></div>
+                    <div class="btn-box m1">
+                        <button class="content-btn" onclick = "editText(${item.id})">編輯</button>
+                        <button class="content-btn" onclick = "deleteText(${item.id})">刪除</button>
+                    </div>
+                </div>`
+            });
+        };
+        // 執行篩選
+        function switchData(text) {
+            switch (text) {
+                case 'all':
+                    output(arr);
+                    break;
+                case 'isTodo':
+                    const todoArr = arr.filter((checkTodo) => {
+                        if (checkTodo.check === true) {
+                            return checkTodo;
+                        }
+                    });
+                    output(todoArr);
+                    break;
+                case 'notTodo':
+                    const notTodoArr = arr.filter((checkTodo) => {
+                        if (checkTodo.check !== true) {
+                            return checkTodo;
+                        }
+                    })
+                    output(notTodoArr);
+                    break;
+                default:
+                    output(arr);
+                    break;
+            }
+
+        }
+
+        console.log(arr);
+
+    </script>
+</body>
+
+</html>

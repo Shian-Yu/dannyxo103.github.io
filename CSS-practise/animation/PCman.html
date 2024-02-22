@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            background-color: black;
+        }
+
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 800px;
+            height: 600px;
+            border: 10px solid darkblue;
+            display: flex;
+            position: relative;
+        }
+
+        .doodle {
+            background-color: yellow;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: absolute;
+            animation-name: go;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+        }
+
+        .doodle::before {
+            content: "";
+            border: 10px solid transparent;
+            border-right: 30px solid black;
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            animation-name: mouth;
+            animation-duration: 0.2s;
+            animation-iteration-count: infinite;
+        }
+
+        .doodle::after {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: black;
+            position: absolute;
+            left: 30px;
+            top: 6px;
+        }
+
+        @keyframes mouth {
+            0% {
+                border-right: 30px solid black;
+            }
+
+            10% {
+                border-right: 55px solid black;
+
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .ghost {
+            width: 50px;
+            height: 50px;
+            border-top-right-radius: 50%;
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 10%;
+            border-bottom-right-radius: 10%;
+            position: absolute;
+        }
+
+        .ghost::before {
+            content: "";
+            border: 11px solid transparent;
+            border-bottom-color: black;
+            position: absolute;
+            top: 30px;
+            left: 4px;
+        }
+
+        .ghost::after {
+            content: "";
+            border: 11px solid transparent;
+            position: absolute;
+            border-bottom-color: black;
+            top: 30px;
+            left: 26px;
+        }
+
+        .ghost-1 {
+            background-color: skyblue;
+            animation-name: go;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 2.1s;
+        }
+        .ghost-2 {
+            background-color: pink;
+            animation-name: go;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 1.4s;
+        }
+        
+        .ghost-3 {
+            background-color: orange;
+            animation-name: go;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 0.7s;
+        }
+        .ghost-4 {
+            background-color: green;
+            right: 0;
+            animation-name: go-ghost;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 0.7s;
+            z-index: 5;
+
+        }
+        .eye {
+            width: 1px;
+            height: 1px;
+            position: relative;
+        }
+        .eye::before {
+            content: "";
+            width: 8px;
+            height: 10px;
+            background-color: violet;
+            border: 5px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 5px;
+            top: 10px;
+        }
+        .eye::after {
+            content: "";
+            width: 8px;
+            height: 10px;
+            background-color: violet;
+            border: 5px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 27px;
+            top: 10px;
+        }
+
+        .beans {
+            width: 10px;
+            height: 10px;
+            background-color: lightyellow;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 5;
+        }
+        .beans-1 {
+            left: 133px;
+            top: 20px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 0.6s;
+        }
+        .beans-2 {
+            left: 233px;
+            top: 20px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 1.3s;
+        }
+        .beans-3 {
+            left: 333px;
+            top: 20px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 2s;
+        }
+        .beans-4 {
+            left: 333px;
+            top: 120px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 2.7s;
+        }
+        .beans-5 {
+            left: 333px;
+            top: 220px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 3.4s;
+        }
+        .beans-6 {
+            left: 433px;
+            top: 220px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 4.1s;
+        }
+        .beans-7 {
+            left: 233px;
+            top: 320px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 5.1s;
+        }
+        .beans-8 {
+            left: 133px;
+            top: 170px;
+            animation: eat-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 6.1s;
+        }
+        .beans-9 {
+            left: 333px;
+            top: 20px;
+            animation: over-beans 10s;
+            animation-iteration-count: infinite;
+            animation-delay: 2s;
+        }
+        .over {
+            width: 800px;
+            font-size: 100px;
+            color: red;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            animation: game-over 10s infinite;
+        }
+        @keyframes go {
+            0% {
+                left: 0px;
+                top: 0px;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            7% {
+                left: 100px;
+                top: 0px;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            14% {
+                left: 200px;
+                top: 0px;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            21% {
+                left: 300px;
+                top: 0px;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            28% {
+                left: 312px;
+                top: 90px;
+                transform: rotate(90deg);
+                opacity: 1;
+            }
+            35% {
+                left: 312px;
+                top: 190px;
+                transform: rotate(90deg);
+                opacity: 1;
+            }
+            42% {
+                left: 400px;
+                top: 200px;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            52% {
+                left: 230px;
+                top: 300px;
+                transform: rotate(-5deg) scaleX(-1);
+                opacity: 1;
+            }
+            62% {
+                left: 125px;
+                top: 165px;
+                transform: rotate(45deg) scaleX(-1);
+                opacity: 1;
+            }
+            72% {
+                left: 300px;
+                top: 10px;
+                transform: rotate(-40deg);
+                opacity: 1;
+            }
+            90% {
+                opacity: 0;
+            }
+            95% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        @keyframes go-ghost {
+            0% {
+                right: 0;
+                opacity: 1;
+            }
+            80% {
+                right: 385px;
+                opacity: 1;
+            }
+            100% {
+                right: 300px;
+                opacity: 0;
+            }
+        }
+        @keyframes eat-beans {
+            0% {
+                opacity: 1;
+            }
+            2% {
+                opacity: 0;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes over-beans {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        @keyframes game-over {
+            0% {
+                opacity: 0;
+            }
+            75% {
+                opacity: 0;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="ghost ghost-1">
+            <div class="eye"></div>
+        </div>
+        <div class="ghost ghost-2">
+            <div class="eye"></div>
+        </div>
+        <div class="ghost ghost-3">
+            <div class="eye"></div>
+        </div>
+        <div class="ghost ghost-4">
+            <div class="eye"></div>
+        </div>
+        <div class="doodle"></div>
+        <div class="beans beans-1"></div>
+        <div class="beans beans-2"></div>
+        <div class="beans beans-3"></div>
+        <div class="beans beans-4"></div>
+        <div class="beans beans-5"></div>
+        <div class="beans beans-6"></div>
+        <div class="beans beans-7"></div>
+        <div class="beans beans-8"></div>
+        <div class="beans beans-9"></div>
+        <div class="over">GAME OVER</div>
+    </div>
+</body>
+
+</html>

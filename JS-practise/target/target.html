@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .title {
+            width: 300px;
+            height: 50px;
+            border: 1px solid black;
+            border-top-right-radius: 5px;
+        }
+
+        .content {
+            width: 900px;
+            height: 500px;
+            border: 1px solid black;
+        }
+
+        .title-list {
+            display: flex;
+            gap: 5px;
+        }
+
+        .title-bgc {
+            background-color: blue;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="title-list">
+            <div class="title" data-title="go">旅行</div>
+            <div class="title" data-title="eat">吃飯</div>
+            <div class="title" data-title="hotel">旅館</div>
+        </div>
+        <div>
+            <div class="content" data-content="go">去武嶺看櫻花</div>
+            <div class="content hidden" data-content="eat">吃燒烤火鍋，不吃飯</div>
+            <div class="content hidden" data-content="hotel">睡死</div>
+        </div>
+    </div>
+    <script>
+        const titles = document.querySelectorAll('.title');
+        const contents = document.querySelectorAll('.content');
+        titles.forEach((item)=> {
+            item.addEventListener('click', ()=> {
+                titles.forEach((e) => {
+                    e.classList.remove('title-bgc');
+                })
+                item.classList.add('title-bgc');
+                const titleData = item.dataset.title;
+                contents.forEach((content) => {
+                    const contentData = content.dataset.content;
+                    content.classList.add('hidden');
+                    if(titleData === contentData){
+                        content.classList.remove('hidden');
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>

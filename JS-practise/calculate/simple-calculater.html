@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            margin: 0 2px;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: lightblue;
+            margin: auto;
+            border-radius: 10px;
+            padding: 2%;
+            margin-top: 200px;
+        }
+
+        .num {
+            padding-left: 14px;
+            margin-bottom: 5px;
+        }
+
+        .final {
+            padding-left: 14px;
+        }
+        .final .result {
+            font-size: 32px;
+            color: orangered;
+            text-shadow: 3px 3px 7px green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="num">
+            數值1: <input class="num1" type="number">
+        </div>
+        <div class="num">
+            數值2: <input class="num2" type="number">
+        </div>
+        <button class="add">加</button>
+        <button class="sub">減</button>
+        <button class="mult">乘</button>
+        <button class="divi">除</button>
+        <button class="clear">清空</button>
+        <p>
+        <div class="final">結果: <span class="result"></span></div>
+        </p>
+    </div>
+    <script>
+        let num1 = document.querySelector('.num1');
+        let num2 = document.querySelector('.num2');
+        let addBtn = document.querySelector('.add');
+        let subBtn = document.querySelector('.sub');
+        let multBtn = document.querySelector('.mult');
+        let diviBtn = document.querySelector('.divi');
+        let clearBtn = document.querySelector('.clear');
+        let result = document.querySelector('.result');
+
+        addBtn.addEventListener('click', function () {
+            result.innerText = (num1.value * 1 + num2.value * 1).toFixed(2);
+        })
+        subBtn.addEventListener('click', function () {
+            result.innerText = (num1.value * 1 - num2.value * 1).toFixed(2);
+        })
+        multBtn.addEventListener('click', function () {
+            result.innerText = ((num1.value * 1) * (num2.value * 1)).toFixed(2);
+        })
+        diviBtn.addEventListener('click', function () {
+            if (num2.value == '') {
+                result.innerText = '0.00';
+            } else if (num2.value == '0') {
+                result.innerText = '無法除以零';
+            } else {
+                result.innerText = ((num1.value * 1) / (num2.value * 1)).toFixed(2);
+            }
+        })
+        clearBtn.addEventListener('click', function () {
+            result.innerText = '';
+            num1.value = '';
+            num2.value = '';
+        })
+    </script>
+
+</body>
+
+</html>

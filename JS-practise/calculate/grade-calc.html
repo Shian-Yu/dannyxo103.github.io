@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            /* appearance: none; */
+            width: 60px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 三科: 國文、英文、數學
+    1.輸入三科分數
+    2.計算平均 => 顯示平均分數
+    3.判斷是否及格 => 顯示及格不及格
+    4.還要給等級A(90以上)、B(80以上)、C(70以上)、D(60以上)、不及格 => 死當 -->
+    <p>
+        國文: <input class="chinese" type="number" min="0" max="100">
+    </p>
+    <p>
+        英文: <input class="english" type="number" min="0" max="100">
+    </p>
+    <p>
+        數學: <input class="math" type="number" min="0" max="100">
+    </p>
+    <button class="clear">清空</button>
+    <button class="compute">計算</button>
+    <p>
+    <div>平均: <span class="avg"></span></div>
+    </p>
+    <p>
+    <div>結果: <span class="result"></span></div>
+    </p>
+    <p>
+    <div>等級: <span class="grade"></span></div>
+    </p>
+
+    <script>
+        let chinese = document.querySelector('.chinese');
+        let english = document.querySelector('.english');
+        let math = document.querySelector('.math');
+
+        let clearBtn = document.querySelector('.clear');
+        let computeBtn = document.querySelector('.compute');
+
+        let avg = document.querySelector('.avg');
+        let result = document.querySelector('.result');
+        let grade = document.querySelector('.grade');
+
+
+        clearBtn.addEventListener('click', function () {
+            console.log(chinese.value)
+            chinese.value = '';
+            english.value = '';
+            math.value = '';
+
+            avg.innerHTML = '';
+            result.innerHTML = '';
+            grade.innerHTML = '';
+        });
+
+        computeBtn.addEventListener('click', function () {
+            let avgScore = (chinese.value * 1 + english.value * 1 + math.value * 1) / 3
+            console.log(avgScore);
+                                    //小數取兩位 
+            avg.innerHTML = avgScore.toFixed(2);
+            let gradeText = '';
+            if (avgScore >= 90) {
+                gradeText = 'A';
+            } else if (avgScore >= 80) {
+                gradeText = 'B';
+            } else if (avgScore >= 70) {
+                gradeText = 'C';
+            } else if (avgScore >= 60) {
+                gradeText = 'D';
+            } else {
+                gradeText = '死當';
+            }
+            grade.innerHTML = gradeText;
+            if (gradeText === '死當') {
+                result.innerHTML = '不及格';
+            } else {
+                result.innerHTML = '及格';
+            }
+        });
+
+        
+    </script>
+</body>
+
+</html>

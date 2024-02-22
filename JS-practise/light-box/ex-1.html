@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/lightbox.css">
+    <style>
+        .my-img {
+            width: 200px;
+            height: auto;
+            border: 2px solid pink;
+            border-radius: 10px;
+        }
+
+        a {
+            text-decoration: none; 
+        }
+    </style>
+</head>
+<body>
+    <a href="./img/cat.jpg" data-lightbox="cat" data-title="Cat1">
+        <img class="my-img" src="./img/cat.jpg" alt="">
+    </a>
+    <a href="./img/cat2.jpg" data-lightbox="cat" data-title="Cat2">
+        <img class="my-img" src="./img/cat2.jpg" alt="">
+    </a>
+    <a href="./img/cat3.jpeg" data-lightbox="cat" data-title="Cat3">
+        <img class="my-img" src="./img/cat3.jpeg" alt="">
+    </a>
+    <a href="./img/cat4.jpg" data-lightbox="cat" data-title="Cat4">
+        <img class="my-img" src="./img/cat4.jpg" alt="">
+    </a>
+
+    <script src="./js/lightbox-plus-jquery.js"></script>
+
+    <script>
+        lightbox.option({
+          'resizeDuration': 200,
+          'wrapAround': true
+        })
+    </script>
+</body>
+</html>

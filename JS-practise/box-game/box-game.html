@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F06060;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+
+        }
+
+        .box-start {
+            width: 520px;
+            height: 520px;
+            padding-top: 80%;
+            margin: auto;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box-start p {
+            color: white;
+            text-shadow: 1px 1px 1px #AB3C3C;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .box-start .text-1 {
+            color: #FFA1A1;
+            font-size: 16px;
+        }
+
+        .start {
+            width: 220px;
+            height: 70px;
+            background-color: #FCAD26;
+            box-shadow: rgb(218, 150, 34) 0px 5px;
+            border-style: none;
+            border-radius: 7px;
+            color: #DDDDDD;
+            margin: auto;
+            font-size: 20px;
+        }
+
+        .box-big {
+            width: 520px;
+            height: 520px;
+            background-color: #D3D3D3;
+            margin: auto;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .box {
+            border: 5px solid #D3D3D3;
+            border-radius: 10px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .nav-1 {
+            width: 80px;
+            height: 50px;
+            font-family: 微软雅黑;
+            color: #FFA1A1;
+        }
+
+        .exit {
+            background-color: #FCAD26;
+            box-shadow: rgb(218, 150, 34) 0px 5px;
+            border-style: none;
+            border-radius: 7px;
+            color: #DDDDDD;
+        }
+
+        @media (max-width:624px) {
+            body {
+                flex-direction: column;
+            }
+            .nav {
+                flex-direction: row;
+            }
+        }
+        @media (max-width:520px) {
+            .box-big {
+                width: 100vw;
+                height: 100vw;
+            }
+            .box-start {
+                width: 100vw;
+                height: 100vw;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="nav">
+        <div class="score nav-1">分數 :
+            <span class="score-1"></span>
+        </div>
+        <div class="time nav-1">時間 :
+            <span class="time-1">15</span>
+        </div>
+        <button class="exit nav-1">離開
+            <span class="exit-1"></span>
+        </button>
+    </div>
+    <div class="box-start">
+        <p>色弱測試</p>
+        <p>Try Color !</p>
+        <p class="text-1">找出所有色塊裡顏色不同的那一個</p>
+        <button class="start">PLAY</button>
+
+    </div>
+    <div class="box-big">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+
+    <script>
+        let boxBig = document.querySelector('.box-big');
+        let j = 1;
+        let score = document.querySelector('.score-1');
+        let boxStart = document.querySelector('.box-start');
+        let startOne = document.querySelector('.start');
+        let timer = document.querySelector('.time-1');
+        let timeZero = 15;
+        let exit = document.querySelector('.exit')
+        let stop;
+
+        startOne.addEventListener('click', function () {
+            boxStart.style.display = 'none';
+            boxBig.style.display = 'flex';
+            stop = setInterval(function () {
+                timeZero--;
+                if (timeZero < 0) {
+                    alert('闖關失敗');
+                    resetWindows();
+                }
+                timer.innerText = timeZero;
+            }, 1000);
+        })
+
+        exit.addEventListener('click', function () {
+            resetWindows();
+        })
+
+        function resetWindows() {
+            timeZero = 15;
+            clearInterval(stop);
+            timer.innerText = timeZero;
+            boxStart.style.display = 'flex';
+            boxBig.style.display = 'none';
+            j = 1;
+            score.innerHTML = j - 1;
+            createBox();
+        }
+
+        function createBox() {
+            boxBig.innerHTML = '';
+            let redColor = Math.floor(Math.random() * 256)
+            let greenColor = Math.floor(Math.random() * 256)
+            let blueColor = Math.floor(Math.random() * 256)
+            let randomColor = 'rgb' + '(' + redColor + ', ' + greenColor + ', ' + blueColor + ')';
+            // j < 2 ? 4 : j**2 條件運算子
+            // 如果 j 小於 2 則為 4 : 否則 為 j ** 2
+            if (j < 2) {
+                for (let i = 0; i < 4; i++) {
+                    boxBig.innerHTML = boxBig.innerHTML + '<div class="box"></div>';
+                }
+            } else {
+                for (let i = 0; i < j ** 2; i++) {
+                    boxBig.innerHTML = boxBig.innerHTML + '<div class="box"></div>';
+                }
+            }
+            //  Math.floor 小於等於的最接近整數
+            //  Math.random 0~1的亂數浮點數
+            let randomNumber = Math.floor(Math.random() * (j ** 2));
+            let boxAll = document.querySelectorAll('.box');
+            boxAll[randomNumber].classList.add('answer');
+            boxAll[randomNumber].style.opacity = j / 10;
+            if (j < 2) {
+                for (let k = 0; k < 4; k++) {
+                    boxAll[k].style.width = 100 / 2 + '%';
+                    boxAll[k].style.height = 100 / 2 + '%';
+                    boxAll[k].style.backgroundColor = randomColor;
+                }
+            } else {
+                for (let k = 0; k < j ** 2; k++) {
+                    boxAll[k].style.width = 100 / j + '%';
+                    boxAll[k].style.height = 100 / j + '%';
+                    boxAll[k].style.backgroundColor = randomColor;
+                }
+            }
+
+        }
+
+        createBox()
+
+        score.innerHTML = 0
+        boxBig.addEventListener('click', function () {
+            //      目標             包含
+            if (event.target.classList.contains('answer')) {
+                if (j > 8) {
+                    alert('恭喜過關');
+                    resetWindows();
+                } else {
+                    j = j + 1;
+                    createBox();
+                    score.innerHTML = j - 1;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

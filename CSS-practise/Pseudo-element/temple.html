@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin: auto;
+        }
+        .box-pillar::before {
+            content: "";
+            width: 100px;
+            height: 200px;
+            background-color: yellow;
+            border-top: 50px solid red;
+            border-bottom: 50px solid red;
+            border-right: 50px solid white;
+            border-left: 50px solid white;
+            position: absolute;
+            left: -200px;
+            top: 50px;
+        }
+        .box-pillar::after {
+            content: "";
+            width: 100px;
+            height: 200px;
+            background-color: yellow;
+            border-top: 50px solid red;
+            border-bottom: 50px solid red;
+            border-right: 50px solid white;
+            border-left: 50px solid white;
+            position: absolute;
+            left: 100px;
+            top: 50px;
+        }
+        .box-main::before {
+            content: "";
+            width: 500px;
+            height: 200px;
+            border-top: 50px solid transparent;
+            border-bottom: 100px solid red;
+            border-right: 50px solid white;
+            border-left: 50px solid white;
+            position: absolute;
+            left: -250px;
+            top: -200px;
+        }
+        .box-main::after {
+            content: "";
+            width: 700px;
+            height: 300px;
+            border-top: 50px solid transparent;
+            border-bottom: 100px solid green;
+            border-right: 50px solid white;
+            border-left: 50px solid white;
+            position: absolute;
+            left: -350px;
+            top: 100px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 屋頂與樓梯 -->
+    <div class="box box-main"></div>
+    <!-- 柱子 -->
+    <div class="box box-pillar"></div>
+</body>
+</html>
